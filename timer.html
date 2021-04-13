@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam View</title>
+
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+<!-- Helper Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+
+<!-- Select Upgrades -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="timers.css">
+
+<script src="checktime.js"></script>
+
+<meta charset="utf-8"/>
+<style>
+.CodeMirror {
+    /*height: 500px;*/
+    height: auto;
+}
+body {
+    margin-top: 70px;
+    margin-bottom: 70px;
+    /*background-color: #e7e7ff;*/
+}
+
+input[type="radio"] {
+    margin-top: 0px;
+}
+
+</style>
+</head>
+
+<body role="document">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li> Home</li>
+            </ul>
+            <div class="navbar-right">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <div id="timer" style="margin-top: 15px; margin-bottom: 15px; width: 400px; text-align: center; visibility: hidden;">
+                            <div class="progress-bar progress-bar-info" id="timerbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="visibility: hidden;"> 
+                            </div>
+                            <span id="timertext" style="position:absolute; right:0; left:0;color:#333; font-size: 12px;"></span>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="toggletimer" href="#">Hide Timer</a>
+                    </li>
+                </ul>
+            </div>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container" role="main">
+
+    <form id="questionform" name="questionform" method="post" action="#" class="form-horizontal col-md-offset-3 col-md-6">
+        <input type="hidden" name="timermethod" id="timer_method" value="{{data.info.timer_method}}">
+        <input type="hidden" name="timerhidden" id="timer_hidden" value="false">
+
+        <div class="form-group">
+            <label for="total-time" class="control-label col-sm-3">Total Time</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="total-time" placeholder="minutes">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="elapsed-time" class="control-label col-sm-3">Elapsed Time</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="elapsed-time" placeholder="minutes">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9 pull-right">
+                <button class="btn btn-default" onClick="form_used = true; return updateTimerInfo();">Update Timer</button>
+                <button class="btn btn-default" onClick="$('#timerchoice').modal('show'); return false;">Choose Timer</button>
+            
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+      var submitting = false;
+      var lastsave = false;
+
+        // Timer and time limits
+        var timer_method = null;
+        timer_method = 'stoplight';
+        var timeallowed = 10;
+        var timeleft = 9;
+        var timeelapsed = 1;
+        var time_enforced = true;
+        // End timer javascript
+
+        $('#toggletimer').click(function() {
+            var hidden = $('#timer_hidden').val();
+
+            if (hidden == 'false') {
+                $('#timer_hidden').val("true");
+                $('#timer').css('visibility', 'hidden');
+                $('#timerbar').css('visibility', 'hidden');
+                $('#timertext').css('visibility', 'hidden');
+                $('#toggletimer').text("Show Timer");
+            } else {
+                $('#timer_hidden').val("false");
+                $('#timer').css('visibility', 'visible');
+                $('#timerbar').css('visibility', 'visible');
+                $('#timertext').css('visibility', 'visible');
+                $('#toggletimer').text("Hide Timer");
+            }
+            return false;
+        });
+
+    </script>
+
+    <div class="modal fade" id="timerchoice" tabindex="-1" role="dialog" data-backdrop='static' data-show='true'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Choose a time-tracking system</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You have {{data.info.time.left}} minutes allowed for this exam.  Please choose one of the following options so that we can help you keep track of your time.  The time will be displayed at the top of your exam.</p>
+                    <div class="list-group" style="cursor: pointer;">
+                        <a class="list-group-item" onClick="return chooseTimer('stoplight');">Count-down Timer Bar Stoplight
+                            <div class="progress" style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%"> 
+                                </div>
+                                <span style="position:absolute; right:0; left:0;color:#333; line-height:2em; font-size: 12px;"><i>x</i> minutes remaining</span>
+                            </div>
+                        </a>
+                        <a class="list-group-item" onClick="return chooseTimer('grayshades');">Count-down Timer Bar Gray
+                            <div class="progress" style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <div class="progress-bar progress-bar-grayone" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%"> 
+                                </div>
+                                <span style="position:absolute; right:0; left:0;color:#333; line-height:2em; font-size: 12px;"><i>x</i> minutes remaining</span>
+                            </div>
+                        </a>
+                        <a class="list-group-item" onClick="return chooseTimer('bar-down');">Count-down Timer Bar
+                            <div class="progress" style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%"> 
+                                </div>
+                                <span style="position:absolute; right:0; left:0;color:#333; line-height:2em; font-size: 12px;"><i>x</i> minutes remaining</span>
+                            </div>
+                        </a>
+                        <a class="list-group-item" onClick="return chooseTimer('bar-up');">Count-up Timer Bar
+                            <div class="progress" style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 25%"> 
+                                </div>
+                                <span style="position:absolute; right:0; left:0;color:#333; line-height:2em; font-size: 12px;">Elapsed time: <i>x</i> minutes</span>
+                            </div>
+                        </a>
+                        <a class="list-group-item" onClick="return chooseTimer('text-down');">Count-down Timer
+                            <p style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <span style="color:#333; line-height:2em; font-size: 12px;"><i>x</i> minutes remaining</span>
+                            </p>
+                        </a>
+                        <a class="list-group-item" onClick="return chooseTimer('text-up');">Count-up Timer
+                            <p style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <span style="color:#333; line-height:2em; font-size: 12px;">Elapsed time: <i>x</i> minutes</span>
+
+                            </p>
+                        </a>
+                        <a class="list-group-item" onClick="return chooseTimer('ten-warn');">10 minute warning pop-up (no time displayed)
+                            <p style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <span style="color:#333; line-height:2em; font-size: 12px;">There are less than 10 minutes left for this exam.</span>
+
+                            </p>
+                        </a>
+                    </div>
+                </div>
+                <!--<div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Begin</button>
+                </div>-->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script>
+        $(document).ready(function(){
+            $("#timerchoice").modal('show');
+        });
+    </script>
+</body>
+</html>
