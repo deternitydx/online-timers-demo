@@ -60,10 +60,16 @@
                     });
                     $('#timerbar').addClass('progress-bar-grayone');
                     $('#timerbar').css('visibility', 'visible');
+                } else if (timer_method == 'green-down') {
+                    $('#timer').css('visibility', 'visible');
+                    $('#timer').addClass('progress');
+                    $('#timerbar').removeClass('progress-bar-info');
+                    $('#timerbar').addClass('progress-bar-greenone');
+                    $('#timerbar').css('visibility', 'visible');
                 } 
             }
 
-            if (timer_method == 'bar-down' || timer_method == 'text-down' || timer_method == "stoplight" || timer_method == "grayshades" || timer_method == "hide-stoplight" || timer_method == "hide-grayshades-down") {
+            if (timer_method == 'bar-down' || timer_method == 'text-down' || timer_method == "stoplight" || timer_method == "grayshades" || timer_method == "hide-stoplight" || timer_method == "hide-grayshades-down" || timer_method == "green-down") {
                     $('#timerbar').css('width', percleft+'%').attr('aria-valuenow',percleft);
                     $('#timertext').text(timeleft + " minutes remaining");
             } else if (timer_method == 'bar-up' || timer_method == 'text-up' || timer_method == "hide-grayshades-up") {
@@ -140,6 +146,24 @@
                     if (timer_method == "hide-grayshades-up") {
                         $('#timertext').css('color', '#fcfcfc');
                     }
+                }
+            }
+            if (timer_method == "green-down") {
+                if (percleft >= 50) {
+                    $('#timerbar').removeClass(function (index, className) {
+                        return (className.match (/(^|\s)progress-bar-\S+/g) || []).join(' ');
+                    });
+                    $('#timerbar').addClass('progress-bar-greenone');
+                } else if (percleft < 50 && percleft >= 10) {
+                    $('#timerbar').removeClass(function (index, className) {
+                        return (className.match (/(^|\s)progress-bar-\S+/g) || []).join(' ');
+                    });
+                    $('#timerbar').addClass('progress-bar-greentwo');
+                } else if (percleft < 10) {
+                    $('#timerbar').removeClass(function (index, className) {
+                        return (className.match (/(^|\s)progress-bar-\S+/g) || []).join(' ');
+                    });
+                    $('#timerbar').addClass('progress-bar-greenthree');
                 }
             }
             return false;
