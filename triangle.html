@@ -1,0 +1,48 @@
+<html>
+<head>
+    
+    <!-- reference: https://www.w3schools.com/howto/howto_css_shapes.asp -->
+
+<style>
+.Triangle {
+	width: 0;
+	height: 0;
+    border-color: blue;
+	border-top: 250px solid transparent;
+	border-right: 500px solid blue;
+	border-bottom: 250px solid transparent;
+    animation-name: letsMove;
+    animation-duration: 30s;
+    animation-iteration-count:infinite;
+    margin: auto;
+    
+
+}
+@keyframes letsMove {
+    from {border-top: 250px solid transparent;
+	border-right: 0px solid blue;
+    border-left: 0px solid blue;
+
+	border-bottom: 250px solid transparent;} 
+    to {border-top: 250px solid transparent;
+	border-left: 500px solid red;
+    border-right: 500px solid red;
+
+	border-bottom: 250px solid transparent;}
+    }
+    from {border-right: solid blue;}
+    to {border-right: solid gray;
+
+    }
+</style>
+</head>
+<body>
+
+<h2 style="text-align:center">Hourglass Timer:</h2>
+<div class="triangle">
+        <script src="countdown.js" width=“300” height="200" class="center"></script>
+</div>
+
+
+</body>
+</html> 
