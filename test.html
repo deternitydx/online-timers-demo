@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Circle Timer</title>
+    <style>
+    #Circle{
+    align-content: center;
+    background-color: green;
+    border: 10px solid black;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    animation-name: letsMove;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    }
+    @keyframes letsMove {
+    from {background-color:green;} 
+    to {background-color:gray;}
+    }
+    from {border : 10px solid hotpink;}
+    to {border:9px solid indigo;
+
+    }
+    .center{
+    background-color:silver;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10%;
+    font-size: 50px;
+    animation: center 2s steps(1,end) infinite;
+
+    }
+    @keyframes center {
+    0% {
+    opacity: 1;
+    }
+    50% {
+    opacity: 0;
+    }
+    100% {
+    opacity: 1;
+    }
+    }
+    </style>
+ 
+</head>
+<body>
+    <script>
+       
+     </script>
+     <p id="test" class="center">
+    </p>
+    <script src="test.js" width=“300” height="200" class="center">
+    </script>
+ <canvas id="Circle" width="500" height="300">  
+</body>
+</html>
