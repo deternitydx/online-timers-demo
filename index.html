@@ -27,7 +27,8 @@
 <link rel="stylesheet" href="timers.css">
 
 <script src="checktime.js"></script>
-
+<!--For the moon icon:-->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <meta charset="utf-8"/>
 <style>
 .CodeMirror {
@@ -43,7 +44,13 @@ body {
 input[type="radio"] {
     margin-top: 0px;
 }
-
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
 </style>
 </head>
 
@@ -64,11 +71,12 @@ input[type="radio"] {
             </ul>
             <div class="navbar-right">
                 <ul class="nav navbar-nav">
-                    <li>
+                    <li>   
                         <div id="timer" style="margin-top: 15px; margin-bottom: 15px; width: 400px; text-align: center; visibility: hidden;">
-                            <div class="progress-bar progress-bar-info" id="timerbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="visibility: hidden;"> 
+                            <div class="progress-bar progress-bar-info" id="timerbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="visibility: hidden;">      
                             </div>
-                            <span id="timertext" style="position:absolute; right:0; left:0;color:#333; font-size: 12px;"></span>
+                            <i id="timertext1" class="fas fa-moon fa-spin" style="font-size:30px; color: yellow; margin-left: auto; margin-right: 50%;"></i>
+                                <span id="timertext" style="position:absolute; right:0; left:0;color:#333; font-size: 12px;"></span>
                         </div>
                     </li>
                     <li>
@@ -203,6 +211,21 @@ input[type="radio"] {
 
                             </p>
                         </a>
+                        <!--For the moon icon:-->
+                        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+                        <a class="list-group-item" onClick="return chooseTimer('text-up');">Moon Timer
+                                <p style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                    <i class="fas fa-moon fa-spin" style="font-size:50px; color: yellow;" ></i> 
+                                    <span style="color:#333; line-height:2em; font-size: 12px;">Elapsed time: <i>x</i> minutes</span>
+	                            </p>  
+                        </a>
+                        <a class="list-group-item" onClick="return chooseTimer('text-up');">Dot Timer
+                           <p style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
+                                <span class="dot" style="font-size:50px "></span> 
+                               <span  style="color:#333; line-height:2em; font-size: 12px;">Elapsed time: <i>x</i> minutes</span>
+                           </p>
+                               
+                       </a>
                         <a class="list-group-item" onClick="return chooseTimer('ten-warn');">10 minute warning pop-up (no time displayed)
                             <p style="margin-top: 10px; margin-left: auto; margin-right: auto; width: 400px; text-align: center;">
                                 <span style="color:#333; line-height:2em; font-size: 12px;">There are less than 10 minutes left for this exam.</span>
